@@ -11,4 +11,28 @@ function computerPlay() {
   return result;
 }
 
-console.log(computerPlay());
+function playRound(playerSelection, computerSelection) {
+  console.log(`--- playRound()`);
+  console.log(`>>> playerSelection: ${playerSelection}`);
+  console.log(`>>> computerSelection: ${computerSelection}`);
+
+  if (playerSelection === computerSelection) {
+    console.log(`It's a draw!`);
+  } else if (playerSelection === "rock" && computerSelection === "paper") {
+    console.log("You lose! Paper beats Rock");
+  } else if (playerSelection === "rock" && computerSelection === "scissors") {
+    console.log("You won! Rock beats Scissors");
+  } else if (playerSelection === "paper" && computerSelection === "scissors") {
+    console.log(`You lose! Scissors beats Rock`);
+  } else if (playerSelection === "scissors" && computerSelection === "rock") {
+    console.log(`You lose! Rock beats Scissors`);
+  } else if (playerSelection === "scissors" && computerSelection === "paper") {
+    console.log(`You won! Scissors beats Paper`);
+  }
+}
+
+function playerPlay(playerSelection) {
+  return playerSelection.toLowerCase();
+}
+
+playRound(playerPlay("scissors"), computerPlay());
