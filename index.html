@@ -12,18 +12,35 @@
 
 <body>
   <header>
-    <h1>rock paper scirssors</h1>
+    <h1>rock paper scissors</h1>
+    <button value="reset" class="btn" type="button">new game</button>
+
   </header>
   <section div="game-container">
-
-    <div class="user-input-container">
-      <h2>Choose:</h2>
-      <form action="#">
-        <button value="rock" class="user-input" type="button">✊</button>
-        <button value="paper" class="user-input" type="button">✋</button>
-        <button value="scissors" class="user-input" type="button">✌</button>
-      </form>
+    <div class="score-container">
+      <h3>Score:</h3>
+      <p>👨 <span class="user-score">0</span></p>
+      <p>🤖 <span class="computer-score">0</span></p>
     </div>
+
+    <div class="round-container">
+      <h3>Round outcome:</h3>
+      <div>👨<span class="user-chose">0</span>
+        <span class="sign">=</span>
+        <span class="computer-chose">0</span>🤖
+      </div>
+      <p class="round-message"></p>
+    </div>
+
+    <div class="user-controls">
+      <h3>choose:</h3>
+      <div class="btn-container">
+        <button value="rock" class="btn" type="button">✊</button>
+        <button value="paper" class="btn" type="button">✋</button>
+        <button value="scissors" class="btn" type="button">✌</button>
+      </div>
+    </div>
+
   </section>
 
 
