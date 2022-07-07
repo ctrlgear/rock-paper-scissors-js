@@ -11,6 +11,10 @@ function computerPlay() {
   return result;
 }
 
+function playerPlay(playerSelection) {
+  return playerSelection.toLowerCase();
+}
+
 function playRound(playerSelection, computerSelection) {
   console.log(`--- playRound()`);
   console.log(`>>> playerSelection: ${playerSelection}`);
@@ -31,8 +35,10 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-function playerPlay(playerSelection) {
-  return playerSelection.toLowerCase();
+function game() {
+  for (let i = 0; i < 5; i++) {
+    playRound(playerPlay(computerPlay()), computerPlay());
+  }
 }
 
-playRound(playerPlay("scissors"), computerPlay());
+game();
