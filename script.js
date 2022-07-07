@@ -1,4 +1,4 @@
-function computerChooses() {
+function computerPlay() {
   let result = "";
 
   // 0 - rock, 1 - paper, 2 - scrissors
@@ -11,4 +11,4 @@ function computerChooses() {
   return result;
 }
 
-console.log(computerChooses());
+console.log(computerPlay());
