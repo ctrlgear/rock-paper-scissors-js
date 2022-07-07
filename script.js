@@ -11,10 +11,6 @@ function computerPlay() {
   return result;
 }
 
-function playerPlay(playerSelection) {
-  return playerSelection.toLowerCase();
-}
-
 function playRound(playerSelection, computerSelection) {
   console.log(`--- playRound()`);
   console.log(`>>> playerSelection: ${playerSelection}`);
@@ -35,10 +31,20 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-function game() {
-  for (let i = 0; i < 5; i++) {
-    playRound(playerPlay(computerPlay()), computerPlay());
-  }
-}
+// function game() {
+//   for (let i = 0; i < 5; i++) {
+//     playRound(userInput, computerPlay());
+//   }
+// }
 
-game();
+let userPressed = null;
+
+document.addEventListener("click", (event) => {
+  userPressed = event.target.value;
+
+  const buttonsAllowed = ["rock", "paper", "scissors"];
+
+  if (buttonsAllowed.includes(userPressed)) {
+    playRound(userPressed, computerPlay());
+  }
+});
