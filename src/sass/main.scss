@@ -1,0 +1,283 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: sans-serif;
+  font-size: 2rem;
+}
+
+.game-section {
+  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+  height: calc(100vh - 2rem);
+
+  background-color: whitesmoke;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+  overflow-x: hidden;
+
+  @media (min-width: 500px) {
+    width: 500px;
+  }
+
+  .game-header {
+    align-self: center;
+    padding: 1rem;
+
+    &--title {
+      font-size: 4rem;
+    }
+  }
+
+  .game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    .score-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      gap: 1rem;
+
+      background-color: beige;
+      padding: 2rem;
+
+      .total-score {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+
+        .user,
+        .computer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 2rem;
+
+          .icon {
+            font-size: 4rem;
+          }
+        }
+
+        .user {
+          &--score {
+            font-size: 3rem;
+            font-weight: 700;
+            animation: growup 1s;
+          }
+        }
+
+        .computer {
+          &--score {
+            font-size: 3rem;
+            font-weight: 700;
+            animation: growup 1s;
+          }
+        }
+      }
+
+      .history-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 18rem;
+
+        .round-history {
+          font-size: 2rem;
+          li {
+            animation: growup 1s;
+
+            .round-outcome {
+              font-weight: 800;
+              animation: growup 1s;
+            }
+          }
+        }
+      }
+    }
+
+    .round-container {
+      width: 100%;
+      padding: 1rem;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+
+      .current-round {
+        width: 90%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+
+        .user-pick {
+          font-size: 4rem;
+          animation-duration: 3s;
+          // animation-name: slidein;
+          animation-name: shakeHandUser;
+          animation-iteration-count: infinite;
+        }
+
+        .compare-sign {
+          font-size: 4rem;
+          font-weight: 900;
+          animation-duration: 1s;
+          animation-name: slidein;
+        }
+        .computer-pick {
+          font-size: 4rem;
+          animation-duration: 3s;
+          // animation-name: slidein;
+          animation-name: shakeHandComputer;
+          animation-iteration-count: infinite;
+        }
+      }
+    }
+
+    .user-controls {
+      background-color: thistle;
+
+      padding: 2rem 0 3rem;
+
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
+      .btn-container {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+        align-items: center;
+
+        .btn {
+          background-color: transparent;
+          font-size: 6rem;
+
+          border: none;
+          cursor: pointer;
+
+          animation: btnAnimate 3s;
+          animation-iteration-count: infinite;
+
+          transition: all 0.2s;
+        }
+
+        // .btn:hover {
+        //   transform: scale(1.1);
+        //   animation: none;
+        // }
+        .btn:active {
+          animation: none;
+          transform: scale(1);
+        }
+      }
+    }
+  }
+}
+
+.btn--new-game {
+  margin-top: 1rem;
+  font-size: 3rem;
+  border: none;
+  padding: 1.5rem 4rem;
+  border-radius: 10px;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+
+  animation-duration: 1s;
+  animation-name: slideup;
+}
+
+.congrats-banner {
+  animation: slideup 1s;
+
+  animation: scale 2s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes scale {
+  50% {
+    text-shadow: 0 1px 20px yellow;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    transform: scale(0.2);
+  }
+  70% {
+    transform: scale(0.6);
+  }
+  90% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes slideup {
+  from {
+    margin-top: 100%;
+    transform: scale(0.1);
+  }
+  50% {
+    transform: scale(0.2);
+  }
+  90% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes growup {
+  from {
+    transform: scale(0);
+  }
+}
+
+@keyframes btnAnimate {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  90% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shakeHandComputer {
+  60% {
+    transform: rotateY(30deg);
+  }
+}
+
+@keyframes shakeHandUser {
+  60% {
+    transform: rotateX(30deg);
+  }
+}
