@@ -103,7 +103,7 @@ body {
   padding: 2px 0;
   text-align: center;
   cursor: pointer;
-  animation: growup 1s;
+  animation: growup 0.3s;
   transition: all 0.3s;
 }
 .game-section .game-container .score-container .history-container .round-history li:hover,
