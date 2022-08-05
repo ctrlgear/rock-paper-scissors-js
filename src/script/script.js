@@ -1,39 +1,24 @@
 // Round elements
-const elRoundCounter = document.querySelector(".round-counter");
-const elCurrentRoundUserPick = document.querySelector(".user-pick");
-const elCurrentRoundComputerPick = document.querySelector(".computer-pick");
-const elCurrentRoundCompareSign = document.querySelector(".compare-sign");
+let elRoundCounter;
+let elCurrentRoundUserPick;
+let elCurrentRoundComputerPick;
+let elCurrentRoundCompareSign;
 
 // Score elements
-const elScoreUser = document.querySelector(".user--score");
-const elScoreComputer = document.querySelector(".computer--score");
+let elScoreUser;
+let elScoreComputer;
 
-const elHistory = document.querySelector(".round-history");
-
-elHistory.innerHTML = "";
+// Hisory element
+let elHistory;
 
 // vars
-// const emojiArray = ["🧱", "📄", "✂"];
+let roundCounter;
+let score;
+let historyArr;
+
 const emojiArray = ["✊", "✋", "✌"];
-let roundCounter = 0;
-const totalScore = { user: 0, computer: 0 };
-const historyArr = [];
 
-// Default State - Round Elements
-elRoundCounter.innerHTML = "0";
-elCurrentRoundUserPick.innerHTML = "👋";
-elCurrentRoundComputerPick.innerHTML = "👋";
-elCurrentRoundCompareSign.innerHTML = "";
-
-// Default State - Score Elements
-elScoreUser.innerHTML = 0;
-elScoreComputer.innerHTML = 0;
-
-document.querySelector(".btn-container").addEventListener("click", (event) => {
-  if (event.target.className !== "btn") return;
-
-  playGame(event.target.value);
-});
+newGame();
 
 function computerSelection() {
   return Math.round(Math.random() * 2);
@@ -69,78 +54,183 @@ function playGame(btnValue) {
 }
 
 function playRound(userPick, computerPick) {
-  roundCounter++;
+  ++roundCounter;
 
   const roundOutcome = evaluateRound(userPick, computerPick);
 
   updateScore(roundOutcome);
 
-  renderScore();
-
   updateHistory(userPick, computerPick, roundOutcome);
-
-  renderHistory();
 
   renderRound(userPick, computerPick, roundOutcome);
 }
 
 function renderRound(userPick, computerPick, roundOutcome) {
   elRoundCounter.innerHTML = roundCounter;
-  elCurrentRoundUserPick.innerHTML = emojiArray[userPick];
-  elCurrentRoundComputerPick.innerHTML = emojiArray[computerPick];
+  elCurrentRoundUserPick.innerHTML = emojiArray[userPick] || userPick;
+  elCurrentRoundComputerPick.innerHTML =
+    emojiArray[computerPick] || computerPick;
   elCurrentRoundCompareSign.innerHTML = roundOutcome;
 }
 
-function renderScore() {
-  elScoreUser.innerHTML = totalScore.user;
-  elScoreComputer.innerHTML = totalScore.computer;
+function updateScore(roundOutcome) {
+  if (roundOutcome === ">") score.user++;
+  else if (roundOutcome === "<") score.computer++;
+
+  renderScore();
 }
 
-function updateScore(roundOutcome) {
-  if (roundOutcome === ">") totalScore.user++;
-  if (roundOutcome === "<") totalScore.computer++;
+function renderScore() {
+  elScoreUser.innerHTML = score.user;
+  elScoreComputer.innerHTML = score.computer;
 }
 
 function updateHistory(userPick, computerPick, roundOutcome) {
   historyArr.push({
-    user: userPick,
-    computer: computerPick,
-    outcome: roundOutcome,
+    userPick,
+    computerPick,
+    roundOutcome,
+    score: { ...score },
   });
+
+  addRoundOutcome();
 }
 
-function renderHistory() {
+function addRoundOutcome() {
   // get last objet from history array
-  const { user, computer, outcome } = historyArr[historyArr.length - 1];
+  const { userPick, computerPick, roundOutcome } =
+    historyArr[historyArr.length - 1];
 
-  const listItem = document.createElement("li");
+  const elListItem = document.createElement("li");
 
-  listItem.innerHTML = `${emojiArray[user]} <span class="round-outcome">${outcome}</span> ${emojiArray[computer]}`;
+  elListItem.id = roundCounter;
+  elListItem.className = "roundItem";
 
-  elHistory.appendChild(listItem);
+  elListItem.innerHTML = `${elListItem.id}. ${emojiArray[userPick]} ${roundOutcome} ${emojiArray[computerPick]}`;
+
+  elHistory.appendChild(elListItem);
+
+  elListItem.addEventListener("click", goBackInTime);
+}
+
+function goBackInTime(event) {
+  console.log(event.target.id);
+  const elListItem = document.getElementById(event.target.id);
+  console.log(elListItem);
+
+  historyArr = historyArr.slice(0, elListItem.id);
+
+  score = { ...historyArr[historyArr.length - 1].score };
+  renderScore();
+
+  roundCounter = elListItem.id - 1;
+
+  renderRound(
+    historyArr[roundCounter].userPick,
+    historyArr[roundCounter].computerPick,
+    historyArr[roundCounter].roundOutcome
+  );
+
+  elHistory.querySelectorAll(".roundItem").forEach((item) => {
+    if (item.id >= elListItem.id) {
+      elHistory.removeChild(item);
+    }
+  });
 }
 
 function winCondition() {
   if (roundCounter < 5) return;
 
+  const elRoundContainer = document.querySelector(".round-container");
   const elBtnContainer = document.querySelector(".btn-container");
 
-  elBtnContainer.innerHTML = `
+  elRoundContainer.innerHTML = `
       <button class="btn--new-game" type="button">new game</button>
     `;
 
-  elBtnContainer.addEventListener("click", () => location.reload());
-
   let winString = "";
 
-  if (totalScore.user === totalScore.computer)
-    winString = `It's a draw! 🤷‍♀️🤷‍♀️🤷‍♀️`;
-  if (totalScore.user > totalScore.computer) winString = `You won! 🏆🏆🏆`;
-  if (totalScore.user < totalScore.computer) winString = `You lost! 🔥🔥🔥`;
+  if (score.user === score.computer) winString = `It's a draw! 🤷‍♀️`;
+  if (score.user > score.computer) winString = `You won! 🏆`;
+  if (score.user < score.computer) winString = `You lost! 🔥`;
 
-  const elRoundContainer = document.querySelector(".round-container");
-
-  elRoundContainer.innerHTML = `
+  elBtnContainer.innerHTML = `
     <h1 class='congrats-banner'>${winString}</h1>
   `;
+
+  document.querySelector(".btn--new-game").addEventListener("click", newGame);
+
+  // Remove eventListener from history items
+  document
+    .querySelectorAll(".roundItem")
+    .forEach((item) => item.removeEventListener("click", goBackInTime));
+}
+
+function newGame() {
+  const elRoundContainer = document.querySelector(".round-container");
+  const elUserControls = document.querySelector(".user-controls");
+
+  elRoundContainer.innerHTML = `
+    <h3>Round <span class="round-counter">0</span> of 5</h3>
+    <div class="current-round">
+      <div class="icon icon--user">🧑</div>
+      <div class="user-pick">👋</div>
+      <div class="compare-sign"></div>
+      <div class="computer-pick">👋</div>
+      <div class="icon icon--computer">💻</div>
+    </div>
+    <p class="round-message"></p>
+  `;
+
+  elUserControls.innerHTML = `
+      <div class="btn-container">
+      <button value="0" class="btn" type="button">✊</button>
+      <button value="1" class="btn" type="button">✋</button>
+      <button value="2" class="btn" type="button">✌</button>
+    </div>
+  `;
+
+  // Default state
+  roundCounter = 0;
+  score = { user: 0, computer: 0 };
+  historyArr = [
+    {
+      userPick: "👋",
+      computerPick: "👋",
+      roundOutcome: "",
+      score: { ...score },
+    },
+  ];
+
+  // Round elements
+  elRoundCounter = document.querySelector(".round-counter");
+  elCurrentRoundUserPick = document.querySelector(".user-pick");
+  elCurrentRoundComputerPick = document.querySelector(".computer-pick");
+  elCurrentRoundCompareSign = document.querySelector(".compare-sign");
+
+  // Score elements
+  elScoreUser = document.querySelector(".user--score");
+  elScoreComputer = document.querySelector(".computer--score");
+
+  elHistory = document.querySelector(".round-history");
+
+  elHistory.innerHTML = "";
+
+  // Default State - Round Elements
+  elRoundCounter.innerHTML = roundCounter;
+  elCurrentRoundUserPick.innerHTML = historyArr[0].userPick;
+  elCurrentRoundComputerPick.innerHTML = historyArr[0].computerPick;
+  elCurrentRoundCompareSign.innerHTML = historyArr[0].roundOutcome;
+
+  // Default State - Score Elements
+  elScoreUser.innerHTML = 0;
+  elScoreComputer.innerHTML = 0;
+
+  document
+    .querySelector(".btn-container")
+    .addEventListener("click", (event) => {
+      if (event.target.className !== "btn") return;
+
+      playGame(event.target.value);
+    });
 }
