@@ -118,7 +118,7 @@ body {
             cursor: pointer;
 
             animation: growup 0.3s;
-            transition: all 0.3s;
+            transition: scale 0.3s;
           }
           li:hover,
           li:active {

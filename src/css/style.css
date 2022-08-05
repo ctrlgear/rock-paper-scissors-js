@@ -104,7 +104,7 @@ body {
   text-align: center;
   cursor: pointer;
   animation: growup 0.3s;
-  transition: all 0.3s;
+  transition: scale 0.3s;
 }
 .game-section .game-container .score-container .history-container .round-history li:hover,
 .game-section .game-container .score-container .history-container .round-history li:active {
